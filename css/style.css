@@ -1,0 +1,472 @@
+/* Liquid Glass (glassmorphism) theme - full replacement */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Merriweather:wght@300;400;700&display=swap');
+ 
+:root {
+    --glass-bg: rgba(255, 255, 255, 0.6);
+    --glass-strong: rgba(255, 255, 255, 0.9);
+    --glass-border: rgba(255,255,255,0.34);
+    --glass-shadow: rgba(20,16,40,0.06);
+    --accent: linear-gradient(90deg, #5b21b6 0%, #7c3aed 100%);
+    --accent-solid: #5b21b6;
+    --text: #0f172a;
+    --muted: #94a3b8; /* greyish */
+    --bg-sky: #eaf6ff; /* light skyblue */
+    --white: #ffffff;
+    --danger: #ef4444;
+    --radius: 24px;
+}
+
+/* Theme variables: light by default; dark mode overrides below */
+:root{
+    /* Page and card backgrounds adjusted per user request */
+    --bg-page: #ffffff; /* body background -> white */
+    --card-bg: #E8F0F2; /* blog card background -> user requested blue */
+    --card-border: rgba(255,255,255,0.18);
+    --card-shadow: rgba(14,165,233,0.06);
+}
+
+[data-theme="dark"]{
+    --bg-page: linear-gradient(180deg,#051026 0%, #071427 60%);
+    --card-bg: linear-gradient(180deg, rgba(12,25,40,0.6), rgba(10,18,30,0.5));
+    --card-border: rgba(255,255,255,0.04);
+    --card-shadow: rgba(0,0,0,0.6);
+    --text: #e6f2eb;
+    .blog-view{background: #020f23;}
+    .blog-card p{color: #000000;}
+    --muted: #9fb0c8;
+    --accent-solid: #4fb3ff;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+/* make page a column so footer can stick to bottom when content is short */
+html, body { min-height: 100vh; }
+body{
+    font-family: 'Inter', -apple-system,BlinkMacSystemFont,'SF Pro Text','Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    /* use the page background variable (now white) */
+    background: #c0e9f7;
+    color:var(--text);
+    line-height:1.5;
+    display: flex;
+    flex-direction: column;
+}
+
+
+/* Header */
+header{
+    position:sticky;top:0;z-index:50;
+    backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+    /* header background: full black requested */
+        background: #0e627e;
+    border-bottom:1px solid rgba(0,0,0,0.08);
+}
+.logo{font-weight:700;font-size:1.15rem;color:#ffffff;text-decoration:none}
+.nav-links{display:flex;gap:1rem;align-items:center}
+.nav-links a .nav-text{display:inline}
+/* Hide inline SVG icons on desktop by default; show only on mobile */
+.nav-icon{display:none}
+.nav-links a{padding:0.45rem 0.8rem;border-radius:10px;color:#ffffff;text-decoration:none;font-weight:600}
+.nav-links a:hover{background:rgba(255,255,255,0.06);color:#ffffff}
+.username{color:#171717;font-weight:600}
+
+/* header profile avatar/initial */
+.header-profile{display:inline-flex;align-items:center;justify-content:center;margin-left:0.5rem;text-decoration:none}
+.header-avatar{width:36px;height:36px;border-radius:10px;object-fit:cover;display:block;border:2px solid rgba(255,255,255,0.6)}
+.header-initial{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#f3e8ff,#eef2ff);color:var(--accent-solid);font-weight:800;font-size:1rem;border:2px solid rgba(255,255,255,0.6)}
+
+@media(max-width:768px){
+    /* Keep header row (nav + search) inline; title moves to second line
+       We use nowrap but allow horizontal scrolling if necessary */
+    .header-inner{display:flex;flex-direction:row;align-items:center;justify-content:space-between;padding:.5rem 1rem;gap:0.4rem;flex-wrap:nowrap;overflow-x:auto}
+    header nav{display:flex;align-items:center;gap:0.6rem;flex:0 0 auto}
+    .mobile-menu-button{display:none}
+    .nav-links{display:flex;gap:0.5rem;align-items:center;max-height:none;opacity:1;padding:0}
+    .nav-links a{display:inline-block;padding:.35rem .6rem}
+    .search-form{width:140px;flex:0 0 auto;margin-left:0}
+    .search-form input[type="search"]{width:100px}
+    .search-form input[type="search"]:focus{width:140px}
+    .header-title{order:2;flex-basis:100%;text-align:center;margin-top:0.5rem}
+}
+
+/* Mid-size screens: keep nav links + search on same horizontal line
+   (e.g. tablets / narrow desktops). Use a tighter search width. */
+@media (max-width:768px) and (min-width:481px) {
+    .header-inner{display:flex;flex-direction:row;align-items:center;justify-content:space-between;flex-wrap:nowrap;padding:.6rem 1rem}
+    .mobile-menu-button{display:none}
+    header nav{display:flex;align-items:center;gap:0.6rem}
+    .nav-links{display:flex;gap:0.6rem;align-items:center;max-height:none;opacity:1;padding:0}
+    .nav-links a{display:inline-block;padding:0.35rem 0.6rem;border-bottom:0}
+    .search-form{width:170px;margin-left:auto;order:1}
+    .search-form input[type="search"]{width:110px}
+    .search-form input[type="search"]:focus{width:150px}
+    .header-title{order:2;flex-basis:100%;text-align:center;margin-top:0.5rem}
+}
+
+/* Small mobile screens: make search smaller and keep hamburger menu */
+@media (max-width:480px){
+    .search-form input[type="search"]{width:90px}
+    .search-form input[type="search"]:focus{width:130px}
+    .nav-links a{padding:0.25rem 0.4rem}
+}
+
+/* Mobile / small screens: show icons instead of link text to guarantee a single-line header */
+@media (max-width:480px) {
+    .nav-links{gap:0.28rem}
+    .nav-links a{
+        padding:0.2rem 0.35rem;
+        line-height:1;
+        display:inline-flex;
+        align-items:center;
+        justify-content:center;
+        gap:0.12rem;
+    }
+    /* hide textual label but keep it available for screen readers */
+    .nav-links a .nav-text{display:none}
+
+    /* ensure inline SVG icons remain visible */
+    .nav-icon{
+        width:16px;
+        height:16px;
+        display:inline-block;
+        vertical-align:middle;
+        fill:#ffffff; /* for path fill */
+        stroke:none;
+    }
+    /* If an SVG uses strokes (like the plus), keep stroke visible */
+    .nav-icon path{fill:currentColor}
+}
+/* Search form baseline styles */
+.search-form {
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.15); /* Light glass effect for the bar */
+    border-radius: 10px;
+    padding: 0 0.5rem;
+    height: 38px; /* Match other elements */
+    margin-right: 0; /* removed negative margin that caused overlap */
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: background-color 0.2s ease;
+}
+
+.search-form:focus-within {
+    background: rgba(255, 255, 255, 0.25);
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.search-form input[type="search"] {
+    background: transparent;
+    border: none;
+    padding: 0 0.5rem;
+    height: 100%;
+    color: var(--white);
+    font-size: 0.95rem;
+    width: 140px; /* Default width */
+    transition: width 0.3s ease;
+}
+
+.search-form input[type="search"]::placeholder {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.search-form input[type="search"]:focus {
+    outline: none;
+    width: 180px; /* Expand slightly on focus */
+}
+
+.search-form button[type="submit"] {
+    background: transparent;
+    border: none;
+    color: var(--white);
+    font-size: 1rem;
+    cursor: pointer;
+    padding: 0 0.3rem;
+    display: flex;
+    align-items: center;
+}
+
+/* Dark mode adjustment for search bar */
+[data-theme="dark"] .search-form input[type="search"] {
+    color: var(--text); /* Use dark mode text color */
+}
+[data-theme="dark"] .search-form input[type="search"]::placeholder {
+    color: var(--muted);
+}
+[data-theme="dark"] .search-form button[type="submit"] {
+    color: var(--text);
+}
+[data-theme="dark"] .search-form {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+/* Container */
+/* Bring content up so header title visually sits close to nav */
+main{max-width:1200px;margin:3.2rem auto 3rem;padding:0 1rem;flex:1}
+
+/* Hero */
+.hero{padding:3rem 1rem;text-align:center}
+.hero h1{font-size:2.6rem;line-height:1.05;margin-bottom:0.6rem;font-weight:700;background:var(--accent);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:780px;margin:0 auto}
+
+/* Blog grid */
+.blog-list{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6rem}
+.blog-card{position:relative;border-radius:var(--radius);padding:1.6rem;background:var(--card-bg);border:1px solid var(--card-border);backdrop-filter: blur(8px) saturate(120%);-webkit-backdrop-filter: blur(8px) saturate(120%);box-shadow:0 10px 30px rgb(125, 125, 125);transition:transform .28s cubic-bezier(.2,.9,.3,1),box-shadow .28s}
+.blog-card:hover{transform:translateY(-8px);box-shadow:0 36px 80px rgba(14,165,233,0.12)}
+.blog-card h2{font-size:1.25rem;margin-bottom:.5rem;}
+.blog-card h2 a{color:#014122;text-decoration:none;transition:color .2s ease}
+.blog-card h2 a:hover{color:#088395}
+.blog-card p{color:#333333;font-size:.98rem}
+.blog-meta{display:flex;gap:1rem;font-size:.9rem;color:var(--muted);margin-bottom:0.9rem}
+.read-more{
+    display:inline-flex;
+    align-items:center;
+    gap:.5rem;
+    color:#5884c3;
+    font-weight:700;
+    text-decoration:none;
+    background:#E8F0F2;
+    padding:.1rem 1rem;
+    border-radius:8px;
+    border-color: #020f23;
+    transition:background-color .2s ease
+}
+.read-more:hover{
+    background:#0A4D68;
+    color:#FFFFFF
+}
+
+/* Liquid sheen */
+.blog-card::after{content:'';position:absolute;left:-30%;top:-40%;width:60%;height:60%;background:linear-gradient(135deg, rgba(255,255,255,0.25), rgba(255,255,255,0.03));transform:rotate(-25deg);filter:blur(18px);opacity:.9;border-radius:40%}
+
+/* Layout with right sidebar for profile */
+.layout{display:grid;grid-template-columns:3fr 1fr;gap:1.8rem;align-items:start}
+.sidebar{position:relative}
+.sidebar .sidebar-box{background:linear-gradient(180deg, rgba(255,255,255,0.9), rgba(255,255,255,0.82));border:1px solid var(--glass-border);padding:1rem;border-radius:14px;box-shadow:0 10px 30px rgba(16,24,40,0.04)}
+.profile-card{display:flex;gap:0.9rem;align-items:center;padding:1rem;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.86));border:1px solid var(--glass-border);box-shadow:0 12px 28px rgba(124,58,237,0.04)}
+.avatar{width:64px;height:64px;border-radius:12px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,#f3e8ff,#eef2ff);color:var(--accent-solid);font-weight:800;font-size:1.25rem}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.profile-info a{color:var(--text);text-decoration:none}
+.profile-info .bio{color:var(--muted);font-size:.95rem;margin-top:.4rem}
+.edit-profile{display:inline-block;margin-top:.6rem;color:var(--accent-solid);font-weight:700;text-decoration:none}
+
+/* blog post page */
+.blog-post{border-radius:calc(var(--radius) + 2px);padding:2.4rem;background:linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.68));border:1px solid var(--glass-border);box-shadow:0 14px 46px rgba(16,24,40,0.06);margin-top:1.5rem}
+.blog-post h1{font-size:2.2rem;margin-bottom:0.5rem}
+.blog-content{color:#000000;font-size:1.05rem;line-height:1.8}
+
+/* Actions */
+.blog-actions{display:flex;gap:0.8rem;margin-top:1.6rem}
+.button{display:inline-flex;align-items:center;gap:.6rem;padding:.6rem 1.2rem;border-radius:8px;border:none;cursor:pointer;font-weight:700}
+.button.primary{
+    background:#088395;
+    color:#fff;
+    transition:all .2s ease;
+    box-shadow: 0 2px 4px rgba(8,131,149,0.1)
+}
+.button.primary:hover{
+    background:#0A4D68;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(10,77,104,0.15)
+}
+.button.ghost{background:transparent;border:1px solid rgba(15,23,42,0.06);color:var(--text)}
+.button.danger{background:var(--danger);color:#fff}
+.like-button{background:transparent;border:1px solid rgba(15,23,42,0.06);padding:.5rem .9rem;border-radius:10px;display:inline-flex;align-items:center;gap:.5rem}
+.like-button{background:transparent;border:1px solid rgba(15,23,42,0.06);padding:.5rem .9rem;border-radius:10px;display:inline-flex;align-items:center;gap:.5rem;transition:transform .18s ease,box-shadow .18s ease,background .18s,color .18s}
+.like-button.liked{background:linear-gradient(90deg,#ff7ab6,#ff8a4b);color:#fff;border-color:transparent;transform:scale(1.04);box-shadow:0 8px 18px rgba(124,58,237,0.12)}
+.like-button.animating{animation:like-pop .38s cubic-bezier(.2,.9,.2,1)}
+
+@keyframes like-pop{0%{transform:scale(1)}30%{transform:scale(1.18)}60%{transform:scale(0.98)}100%{transform:scale(1.04)}}
+
+/* Forms & editor */
+.auth-container,.blog-editor{max-width:720px;margin:3rem auto;padding:1.8rem;border-radius:calc(var(--radius) - 2px);background:linear-gradient(180deg, rgba(237, 227, 227, 0.9), rgba(184, 236, 221, 0.78));border:1px solid rgb(126, 76, 76);box-shadow:0 14px 36px #454646}
+.form-group{margin-bottom:1rem}
+.form-group label{display:block;margin-bottom:.4rem;font-weight:600;color:var(--text)}
+.form-group input,.form-group textarea{width:100%;padding:.9rem 1rem;border-radius:12px;border:1px solid rgba(15,23,42,0.06);background:rgba(255,255,255,0.95)}
+.form-row{display:flex;gap:1rem}
+
+/* secondary button style for consistency */
+.button.secondary{
+    background: #088395;
+    color: rgb(241, 242, 245);
+    padding: 5px 15px;
+}
+.button.secondary:hover{
+    background: #1c2a4a;
+}
+
+.edit-btn{
+    background: #088395;
+    color:#e8e1e1;
+    padding: 4px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+}
+
+
+.delete-btn{
+    background: #ef4444;
+    color: #e8e1e1;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 700;
+}
+
+/* Footer */
+/* Dark-blue footer for contrast and legacy look */
+.site-footer{
+    margin-top:0;
+    padding:3.2rem 1rem;
+    /* restored dark-blue gradient for footer */
+    background:#02121e;
+    color: #cfe8ff;
+}
+.site-footer .footer-inner{max-width:1200px;margin:0 auto;display:flex;gap:2rem;align-items:flex-start;justify-content:space-between}
+.site-footer h4{color:#ffffff;margin-bottom:.6rem}
+.site-footer a{color:#cfe8ff;text-decoration:none}
+.site-footer a:hover{color:#ffffff;text-decoration:none;margin-left: 10px; transition:all 0.3s;}
+.site-footer .col{flex:1;min-width:140px;}
+.site-footer .logo{color:#ffffff}
+.site-footer .legal{margin-top:1.2rem;color:#9fb0c8;font-size:.92rem}
+
+/* small screens: stack */
+@media(max-width:768px){.site-footer .footer-inner{flex-direction:column;gap:1rem}.site-footer .col{width:100%}}
+
+/* responsive */
+@media(max-width:1200px){.blog-list{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:992px){.blog-list{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.hero h1{font-size:2rem}.blog-list{grid-template-columns:1fr}}
+@media(max-width:900px){
+    .layout{grid-template-columns:1fr;}
+    .sidebar{order:2}
+    .blog-list{order:1}
+}
+
+/* Mobile nav reveal (animated) */
+.mobile-menu-button{display:none;background:transparent;border:none;color:var(--text);font-size:1.05rem;padding:.4rem;margin-right:.5rem}
+.nav-links{transition:max-height .36s ease,opacity .25s ease}
+/* Keep nav links inline at all sizes by default; we won't collapse into a vertical sidebar */
+@media (max-width:768px){
+    .mobile-menu-button{display:none}
+    .nav-links{display:flex;gap:0.5rem;align-items:center;max-height:none;opacity:1;padding:0}
+    .nav-links a{display:inline-block;padding:.35rem .6rem;border-bottom:0}
+}
+
+/* When nav is open prevent background interactions a bit */
+body.nav-open{overflow:hidden}
+
+/* subtle animations */
+@keyframes floaty{0%{transform:translateY(0)}50%{transform:translateY(-6px)}100%{transform:translateY(0)}}
+.accent-bubble{position:absolute;right:-40px;top:-40px;width:160px;height:160px;border-radius:50%;background:radial-gradient(circle at 30% 30%, rgba(124,58,237,0.12), rgba(14,165,233,0.06));filter:blur(24px);pointer-events:none;animation:floaty 6s ease-in-out infinite}
+
+/* editor tweaks for SimpleMDE/CodeMirror */
+.CodeMirror{border-radius:12px;border:1px solid rgba(15,23,42,0.06)!important;background:rgba(255,255,255,0.94)!important}
+
+/* utility */
+.muted{color:var(--muted)}
+.center{max-width:900px;margin:0 auto}
+
+/* Header layout using CSS Grid: left/nav | flexible center | right/search */
+.header-inner{
+    max-width:1200px;
+    margin:0 auto;
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    grid-template-rows:auto auto;
+    align-items:center;
+    padding:0.7rem 1rem;
+    gap:0.6rem;
+    position:relative;
+}
+
+/* Nav sits in the left column */
+header nav{display:flex;align-items:center;gap:1rem;grid-column:1;grid-row:1}
+.logo{font-weight:700;font-size:1.25rem;color:#ffffff;text-decoration:none}
+
+/* Search/form/profile area sits in the right column */
+.search-form{grid-column:3;grid-row:1;justify-self:end;align-self:center;margin-left:0}
+
+/* Title occupies the full second row and is centered */
+.header-title{
+    padding:.5rem .8rem;
+    border-radius:12px;
+    background:linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.18));
+    border:1px solid rgba(255,255,255,0.18);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    box-shadow:0 6px 18px rgba(14,165,233,0.06);
+    grid-column:1 / -1;
+    grid-row:2;
+    justify-self:center;
+    text-align:center;
+    margin-top:0.4rem;
+    font-size:1.18rem;font-weight:700;color:#ffffff;margin:0;letter-spacing:0.2px
+}
+
+/* Desktop: place header title inline (center column) so it sits on the same row as nav/search */
+@media (min-width:769px) {
+    .header-title{
+        grid-column:2; /* center column */
+        grid-row:1;    /* same row as nav & search */
+        justify-self:center;
+        align-self:center;
+        margin-top:0;
+        /* show boxed/pill appearance on desktop to match mobile */
+        background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(255,255,255,0.18));
+        border:1px solid rgba(255,255,255,0.18);
+        box-shadow:0 6px 18px rgba(14,165,233,0.06);
+        padding:.5rem .8rem;
+        border-radius:12px;
+        color: #000000; /* black text as requested */
+        font-size:1.18rem;
+    }
+}
+
+/* Small screens: stack the header, but keep nav links visible inline as icons/text */
+@media(max-width:768px){
+    .header-inner{display:flex;flex-direction:column;align-items:stretch;padding:.6rem 1rem;gap:0.5rem}
+    header nav{order:1;width:100%;justify-content:space-between}
+    .mobile-menu-button{display:inline-flex}
+    /* Keep nav links visible and inline on small screens so icons show by default */
+    .nav-links{display:flex;gap:0.6rem;align-items:center;max-height:none;opacity:1;padding:0;margin-top:0;transition:max-height .36s ease,opacity .25s ease}
+    .nav-links a{display:inline-flex;padding:.35rem .6rem;align-items:center;border-bottom:0}
+    .search-form{order:2;width:100%;justify-self:stretch;margin-top:0}
+    .header-title{order:3;grid-column:auto;grid-row:auto;margin-top:0}
+}
+
+/* Make the header main title ("Latest Blog Posts") black as requested */
+header .header-title{
+     color: #000000;
+}
+
+/* Brand color specifically for the header logo (Thedium) */
+header .logo{
+    color: #F2C864;
+    font-size: 2rem; /* increased size for header brand */
+    font-weight: 700;
+    text-decoration: none;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+/*Blog editor text color adjustment */
+.blog-editor{
+    color: #014122;
+}
+
+/* Theme toggle styles */
+.theme-toggle{width:38px;height:38px;border-radius:10px;border:none;background:transparent;display:inline-flex;align-items:center;justify-content:center;cursor:pointer;margin-left:8px;position:relative}
+.theme-toggle{content:'☀';font-size:14px;color:#ffffff;transition:transform .18s ease,opacity .18s}
+.theme-toggle:focus{outline:2px solid rgba(79,179,255,0.18);outline-offset:2px}
+
+/* Smooth transitions */
+*{transition:background-color .18s ease,color .18s ease,box-shadow .18s ease,transform .18s ease}
+
+/* Headings use Merriweather for a Medium-like look */
+h1,h2,h3,.header-title,.blog-card h2,.blog-post h1{
+    font-family:'Merriweather', serif;
+    color: #870202;
+    text-align: center;
+}
