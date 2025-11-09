@@ -1,4 +1,4 @@
-# 📰 Thedium - Modern Blog Application
+# 📰 Thedium - Modern Blog Website
 
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-blue?logo=php&logoColor=white)](https://www.php.net/)
 [![MySQL](https://img.shields.io/badge/MySQL-8.0%2B-orange?logo=mysql&logoColor=white)](https://www.mysql.com/)
